@@ -1,9 +1,10 @@
 import { isNull } from "lodash";
 import _ from 'lodash';
+import { productsModel } from "../models/products.model";
 
 class Cmongodb {
-    constructor(model){
-        this.model = model
+    constructor(){
+        this.model = productsModel;
     }
     async create(obj){
         const newObj = await this.model.create(obj)
@@ -30,7 +31,7 @@ class Cmongodb {
             }
         }
     }
-    async supr(id){
+    async remove(id){
         await this.model.deleteOne({_id: id});
     }
 }

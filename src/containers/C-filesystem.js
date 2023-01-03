@@ -1,11 +1,11 @@
-import fs from ('fs');
+import fs from 'fs';
 import { v4 as uuid } from "uuid";
 import _ from "lodash";
 
 
 class Cfilesystem {
-    constructor(name){
-        this.name = name;
+    constructor(){
+        this.name = 'products';
     }
     async create(obj){
         try {
@@ -75,7 +75,7 @@ class Cfilesystem {
             };
         }
     }
-    async supr(id){
+    async remove(id){
         try {
             const data = this.getAll();
             let dataP = await JSON.parse(data);
