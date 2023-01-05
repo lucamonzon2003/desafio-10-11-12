@@ -38,7 +38,17 @@ app.get("/", async (_req, res, next) => {
 
 io.on('connection', async (socket) => {
     console.info('Nuevo cliente conectado')
-
+    socket.on('NEW_MESSAGE_CLI', async message => {
+        message.fyh = new Date().toLocaleString();
+        await messageDb.save(message);
+        console.info(message);
+        io.sockets.emit('NEW_MESSAGE_SERVER', message);
+    });
+    socket.on('NEW_PRODUCT_CLI', async product => {
+        await productDb.save(product)
+        console.info(product);
+        io.sockets.emit('NEW_PRODUCT_SERVER', product);
+    });
 });
 
 export default app;
