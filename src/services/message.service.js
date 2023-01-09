@@ -1,31 +1,31 @@
 import 'dotenv/config'
-import dbService from '../containers/C-filesystem.js'
-import { ProductCreateDTO } from '../dto/product.dto.js'
+import dbService from '../containers/C-mongodb.js'
+import { MessageCreateDTO } from '../dto/message.dto'
 
-class ProductsService {
+class MessageService {
     constructor(){
-        this.dao = new dbService;
+        this.dao = new dbService();
     }
     async getAll(){
-        const products = await this.dao.getAll()
-        return products;
+        const messages = await this.dao.getAll()
+        return messages;
     }
     async getById(id){
         try {
-            const product = await this.dao.getById(id)
-            return product;
+            const message = await this.dao.getById(id)
+            return message;
         } catch(err) {
             if (err.message === "Item not found") {
-                throw new Error(`Product not found with id: ${id}`)
+                throw new Error(`Message not found with id: ${id}`)
             }
             throw err;
         }
         
     }
     async create(obj){
-        const productDto = new ProductCreateDTO(obj);
-        const newProduct = await this.dao.create(productDto);
-        return newProduct;
+        const messageDto = new MessageCreateDTO(obj);
+        const newMessage = await this.dao.create(messageDto);
+        return newMessage;
         
     }
     async remove(id){
@@ -33,15 +33,16 @@ class ProductsService {
     }
     async update(obj, id){
         try {
-            const product = await this.dao.update(obj, id)
-            return product;
+            const message = await this.dao.update(obj, id)
+            return message;
         } catch(err) {
             if (err.message === "Item not found") {
-                throw new Error(`Product not found with id: ${id}`)
+                throw new Error(`message not found with id: ${id}`)
             }
             throw err;
         }
     }
 }
 
-export default ProductsService;
+export default MessageService;
+

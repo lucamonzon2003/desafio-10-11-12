@@ -1,40 +1,42 @@
 import express from 'express';
-import 'dotenv/config';
+import dotenv from 'dotenv'
 import _ from 'lodash';
 import logger from 'morgan';
-
-import {Server as HttpServer} from 'http';
-import {Server as IoServer} from 'socket.io'
-
-import ProductsService from './services/products.service.js';
-const ProductsService1 = new ProductsService
-
-import { errorHandler } from './middlewares/errorHandler.js'
+import MongoStore from 'connect-mongo';
+import session from 'express-session';
+import http from 'http';
+import {Server as IoServer} from 'socket.io';
+import { errorHandler } from './middlewares/errorHandler.js';
+import router from './routes/index.routes.js'
+dotenv.config();
 
 const app = express();
-const http = new HttpServer(app);
-const io = new IoServer(http);
+const server = http.createServer(app)
+const io = new IoServer(server);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
 
-app.use(errorHandler);
+// app.use(router)
 
 app.get("/api/health", (_req, res) => {
     res.status(200).send();
-    res.render();
 });
 
-app.get("/", async (_req, res, next) => {
-    try {
-        const products = await ProductsService1.getAll();
-        res.render("index", { products });
-    } catch (err) {
-        next(err);
-    }
-});
+const {COOKIES_SECRET, MONGO_URI} = process.env
+
+app.use(session({
+    secret:COOKIES_SECRET,
+    store:MongoStore.create({
+        mongoUrl:MONGO_URI,
+        ttl: 60,
+        stringify: true
+    }),
+    saveUninitialized: false,
+    resave: true
+}))
 
 io.on('connection', async (socket) => {
     console.info('Nuevo cliente conectado')
@@ -51,4 +53,5 @@ io.on('connection', async (socket) => {
     });
 });
 
-export default app;
+app.use(errorHandler);
+export default server;

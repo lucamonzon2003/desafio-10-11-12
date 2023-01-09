@@ -1,6 +1,5 @@
-import { isNull } from "lodash";
 import _ from 'lodash';
-import { productsModel } from "../models/products.model";
+import { productsModel } from '../models/products.model.js';
 
 class Cmongodb {
     constructor(){
