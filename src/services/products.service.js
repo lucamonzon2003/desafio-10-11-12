@@ -1,14 +1,14 @@
 import 'dotenv/config'
 import { ProductCreateDTO } from '../dto/product.dto.js'
-import dbService from '../containers/C-mongodb.js'
+import productsDao from '../daos/products.dao.js'
 
 class ProductService {
     constructor(){
-        this.dao = new dbService();
+        this.dao = productsDao;
     }
     async getAll(){
         const products = await this.dao.getAll()
-        return await products;
+        return products;
     }
     async getById(id){
         try {

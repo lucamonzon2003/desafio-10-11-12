@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
 
-// app.use(router)
+app.use(router)
 
 app.get("/api/health", (_req, res) => {
     res.status(200).send();
@@ -31,8 +31,10 @@ app.use(session({
     secret:COOKIES_SECRET,
     store:MongoStore.create({
         mongoUrl:MONGO_URI,
+        databaseName: "ecommerce",
         ttl: 60,
-        stringify: true
+        stringify: true,
+
     }),
     saveUninitialized: false,
     resave: true

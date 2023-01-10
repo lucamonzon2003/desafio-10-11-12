@@ -1,10 +1,11 @@
 import { Router } from "express";
 const router = Router();
+import AuthService from '../services/auth.service.js'
 
 router.post("/login", async (req, res, next) => {
     try {
         const { email, password } = req.body;
-    const logedIn = await authService.login(email, password);
+    const logedIn = await AuthService.login(email, password);
     if (!logedIn) {
         return res.status(401).json({
             statusCode: 401,
@@ -17,7 +18,7 @@ router.post("/login", async (req, res, next) => {
         user: req.session.user,
         succes: true
     })
-    } catch (error) {
+    } catch (err) {
         next(err)
     }
 })

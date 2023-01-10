@@ -12,4 +12,4 @@ class MockService {
     }
 }
 
-export default MockService;
+export default new MockService();

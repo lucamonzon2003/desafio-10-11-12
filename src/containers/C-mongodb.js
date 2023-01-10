@@ -1,9 +1,8 @@
 import _ from 'lodash';
-import { productsModel } from '../models/products.model.js';
 
 class Cmongodb {
-    constructor(){
-        this.model = productsModel;
+    constructor(model){
+        this.model = model;
     }
     async create(obj){
         const newObj = await this.model.create(obj)
