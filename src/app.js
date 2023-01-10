@@ -31,10 +31,9 @@ app.use(session({
     secret:COOKIES_SECRET,
     store:MongoStore.create({
         mongoUrl:MONGO_URI,
-        databaseName: "ecommerce",
         ttl: 60,
         stringify: true,
-
+        dbName: "ecommerce"
     }),
     saveUninitialized: false,
     resave: true

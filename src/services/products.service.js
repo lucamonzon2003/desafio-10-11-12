@@ -20,7 +20,6 @@ class ProductService {
             }
             throw err;
         }
-        
     }
     async create(obj){
         const productDto = new ProductCreateDTO(obj);
