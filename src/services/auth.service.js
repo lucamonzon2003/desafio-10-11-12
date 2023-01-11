@@ -5,7 +5,7 @@ import UserService from './user.service.js';
 class AuthService {
     constructor() {
     }
-    async logedIn(email, password) {
+    async login(email, password) {
         try {
             const user = await UserService.getById(email);
             if (!user) return false;
@@ -17,13 +17,12 @@ class AuthService {
             console.log(err)
         }
     }
-    // async register(){
+    async register(){
 
-    // }
+    }
 
 }
 
 export default new AuthService();
 
 //TODO bcrypt
-//TODO register
