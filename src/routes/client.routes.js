@@ -2,7 +2,6 @@ import { Router } from "express";
 const router = Router();
 import ProductService from '../services/products.service.js';
 import MockService from '../services/mock.service.js';
-import { loged } from "../middlewares/loged.js";
 
 router.get("/", async (req, res, next) => {
     try {
@@ -23,10 +22,10 @@ router.get("/register", async (req, res, next) => {
     res.status(200).render('pages/register', {title: "Register", loged: req.session.user})
 })
 router.get("/newProduct", async (req, res, next) => {
-    
+    //TODO /newProduct
 })
 router.get("/chat", async (req, res, next) => {
-    
+    // TODO /chat
 })
 router.get("/mock", async (_req, res, next) => {
     try {

@@ -1,5 +1,6 @@
 // import bcrypt from '';
 import UserService from './user.service.js';
+import bcrypt from 'bcrypt';
 
 
 class AuthService {
@@ -9,8 +10,8 @@ class AuthService {
         try {
             const user = await UserService.getById(email);
             if (!user) return false;
-            // const isValidPassword = await bcrypt.compare(password, user.password);
-            // if(!isValidPassword) return false;
+            const isValidPassword = await bcrypt.compare(password, user.password);
+            if(!isValidPassword) return false;
             // delete user.password; //TODO no borra
             return user;
         } catch (err) {
@@ -24,5 +25,3 @@ class AuthService {
 }
 
 export default new AuthService();
-
-//TODO bcrypt

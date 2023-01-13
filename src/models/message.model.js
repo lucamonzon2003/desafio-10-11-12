@@ -1,22 +1,17 @@
 import mongoose from 'mongoose';
+import { Schema } from 'mongoose';
 
 const messagesCollection = 'messages';
 
-const productsSchema = new mongoose.Schema({
-    title: {
-        type: String,
+const messagesSchema = new mongoose.Schema({
+    author: {
+        type: Schema.Types.ObjectId, ref:"userSchema",
         require: true
     },
-    price: {
+    message: {
         type: String,
         require: true
-    },
-    thumbnail: {
-        type: String
     }
-},
-{timestamps: true});
+});
 
-export const messagesModel = mongoose.model(productsCollection, productsSchema);
-
-//TODO message model
+export const messagesModel = mongoose.model(messagesCollection, messagesSchema);
