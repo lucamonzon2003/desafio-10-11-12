@@ -1,13 +1,14 @@
 import UserDao from "../daos/user.dao.js";
-// import usersDto from '../dto/users.dto.js';
+import { UserCreateDTO } from '../dto/users.dto.js';
 
 class UserService {
     constructor(){
         this.dao = UserDao;
     }
-    async create(newUser){
-        const user = await this.dao.create(newUser);
-        return user;
+    async create(data){
+        const user = new UserCreateDTO(data).build();
+        const newUser = await this.dao.create(user);
+        return newUser;
     }
     async getAll(){
         const users = await this.dao.getAll();

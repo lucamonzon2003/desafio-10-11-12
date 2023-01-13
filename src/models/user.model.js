@@ -20,7 +20,7 @@ const usersSchema = new mongoose.Schema({
     },
     lastName: {
         type: String,
-        require: true
+        // require: true
     },
     age: {
         type: Number
@@ -31,20 +31,23 @@ const usersSchema = new mongoose.Schema({
     avatar: {
         type: String,
         default: 'https://cdn2.vectorstock.com/i/1000x1000/57/91/profile-avatar-icon-design-template-vector-28515791.jpg'
-    },
+    }
 })
 
-usersSchema.pre('save', () => {
-    if (!this.alias) {
-        this.alias = this.name;
+usersSchema.pre('save', async function(next) {
+    const user = this
+    console.log(user)
+    if (!user?.alias) {
+        user.alias = user.name;
     }
-    bcrypt.hash(this.password, 10, (error, password) => {
+    bcrypt.hash(user.password, 10, (error, password) => {
         if (!error) {
-            this.password = password;
-            return
-        }
+            user.password = password;
+        } else {
         throw new Error("Unexpected error: on presave user")
+        }
     })
+    next()
 })
 
 usersSchema.pre('update', () => {

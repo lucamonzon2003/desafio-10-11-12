@@ -3,7 +3,7 @@ import _ from 'lodash'
 export class UserCreateDTO {
     constructor(user) {
         this.name = user.name
-        this.mail = user.mail
+        this.email = user.email
         this.password = user.password
         this.lastName = user.lastName
         this.age = user.age
@@ -11,10 +11,10 @@ export class UserCreateDTO {
         this.avatar = user.avatar
     }
     build(){
-        if(_.isNil(this.name)) throw new Error('name is required');
-        if(_.isNil(this.mail)) throw new Error('mail is required');
+        if(_.isEmpty(this.name)) throw new Error('name is required');
+        if(_.isNil(this.email)) throw new Error('email is required');
         if(_.isNil(this.password)) throw new Error('password is required');
-        if(_.isNil(this.lastName)) throw new Error('lastName is required');
+        // if(_.isNil(this.lastName)) throw new Error('lastName is required');
         return this;
     }
 }

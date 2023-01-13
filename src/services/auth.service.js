@@ -19,7 +19,6 @@ class AuthService {
         }
     }
     async register(){
-
     }
 
 }
