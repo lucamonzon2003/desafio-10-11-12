@@ -34,7 +34,7 @@ const usersSchema = new mongoose.Schema({
     }
 })
 
-usersSchema.pre('save', async function(next) {
+usersSchema.pre('save', function(next) {
     const user = this
     console.log(user)
     if (!user?.alias) {

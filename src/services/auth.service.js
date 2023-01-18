@@ -1,7 +1,5 @@
-// import bcrypt from '';
-import UserService from './user.service.js';
 import bcrypt from 'bcrypt';
-
+import UserService from '../services/user.service.js';
 
 class AuthService {
     constructor() {
@@ -10,12 +8,12 @@ class AuthService {
         try {
             const user = await UserService.getById(email);
             if (!user) return false;
-            const isValidPassword = await bcrypt.compare(password, user.password);
+            const isValidPassword = await bcrypt.compare(password, user[0].password);
             if(!isValidPassword) return false;
             // delete user.password; //TODO no borra
             return user;
         } catch (err) {
-            console.log(err)
+            console.info(err)
         }
     }
     async register(){

@@ -4,4 +4,5 @@ export const errorHandler = (err, req, res, _next) => {
         status: 500,
         success: false
     })
+    console.info(err)
 }
