@@ -6,12 +6,14 @@ class AuthService {
     }
     async login(email, password) {
         try {
-            const user = await UserService.getById(email);
-            if (!user) return false;
-            const isValidPassword = await bcrypt.compare(password, user[0].password);
-            if(!isValidPassword) return false;
+            const data = await UserService.getById(email);
+            if (!data) return false;
+            const user = data[0]
+            await bcrypt.compare(password, user.password).then(function(result) {
+                if(!result) return false;
+            });
+            return user
             // delete user.password; //TODO no borra
-            return user;
         } catch (err) {
             console.info(err)
         }

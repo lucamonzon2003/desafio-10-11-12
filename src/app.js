@@ -8,6 +8,7 @@ import http from 'http';
 import {Server as IoServer} from 'socket.io';
 import { errorHandler } from './middlewares/errorHandler.js';
 import router from './routes/index.routes.js'
+import passport from 'passport';
 dotenv.config();
 
 const app = express();
@@ -31,8 +32,11 @@ app.use(session({
     }),
     saveUninitialized: false,
     resave: true
-})
-);
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use(router)
 

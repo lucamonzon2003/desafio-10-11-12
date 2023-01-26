@@ -34,19 +34,15 @@ const usersSchema = new mongoose.Schema({
     }
 })
 
-usersSchema.pre('save', function(next) {
+usersSchema.pre('save', async function(next) {
     const user = this
-    console.log(user)
     if (!user?.alias) {
         user.alias = user.name;
     }
-    bcrypt.hash(user.password, 10, (error, password) => {
-        if (!error) {
-            user.password = password;
-        } else {
-        throw new Error("Unexpected error: on presave user")
-        }
-    })
+    await bcrypt.hash(user.password, 10).then(function(password) {
+            return user.password = password;
+    });
+    console.log(user.password)
     next()
 })
 
@@ -61,5 +57,6 @@ usersSchema.pre('update', () => {
         })
     }
 })
+//TODO update me parece que va a fallar
 
 export const usersModel = mongoose.model(usersCollection, usersSchema);
