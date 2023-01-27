@@ -42,7 +42,6 @@ usersSchema.pre('save', async function(next) {
     await bcrypt.hash(user.password, 10).then(function(password) {
             return user.password = password;
     });
-    console.log(user.password)
     next()
 })
 

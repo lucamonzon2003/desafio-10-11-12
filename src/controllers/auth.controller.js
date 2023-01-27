@@ -1,5 +1,4 @@
-import authService from '../services/auth.service.js'
-import userService from "../services/user.service.js";
+import authService from '../services/auth.service.js';
 
 export const login = async (req, res, next) => {
     try {
@@ -22,14 +21,10 @@ export const login = async (req, res, next) => {
 export const register = async (req, res, next) => {
     try {
         const data = req.body;
-        const user = await userService.create(data);
-        // delete user.password; //TODO no borra
+        const user = await authService.register(data);
+        req.session.user = user
         res.status(201).redirect("/");
     } catch (err) {
-        console.log(err)
-        if(err.code === 11000) {
-            return res.status(409).send("Ya existe una cuenta con el mismo mail")
-        }
         next(err)
     }
 }

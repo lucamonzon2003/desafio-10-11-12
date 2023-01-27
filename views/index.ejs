@@ -3,8 +3,8 @@
     <%- include('./partials/head') %>
 <body>
     <%- include('./partials/header') %>
-    <% if(loged) { %>
-        <h3> Bienvenido! </h3> 
+    <% if(session) { %>
+        <h3> Bienvenido! <%= session.email %> </h3> 
     <%- include('./partials/lists/products', {products: products}) %>
     <% } else { %>
         <h1>Para acceder a la lista de productos tenes que iniciar sesion o registrarte</h1>

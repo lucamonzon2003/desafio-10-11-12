@@ -25,6 +25,7 @@ export class UserResponseDTO {
         this.lastName = user.lastName
         this.alias = user.alias
         this.avatar = user.avatar
+        this.email = user.email
     }
     build(){
         return this
