@@ -6,10 +6,16 @@ import MongoStore from 'connect-mongo';
 import session from 'express-session';
 import http from 'http';
 import {Server as IoServer} from 'socket.io';
-import { errorHandler } from './middlewares/errorHandler.js';
-import router from './routes/index.routes.js'
 import passport from 'passport';
+import {Strategy as LocalStrategy} from 'passport-local'
+//TODO const LocalStrategy = require('passport-local').Strategy
 dotenv.config();
+
+import indexRouter from './routes/index.routes.js'
+import { errorHandler } from './middlewares/errorHandler.js';
+import authService from './services/auth.service.js';
+import userService from './services/user.service.js';
+
 
 const app = express();
 const server = http.createServer(app)
@@ -21,7 +27,6 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 const {COOKIES_SECRET, MONGO_URI} = process.env
-
 app.use(session({
     secret:COOKIES_SECRET,
     store:MongoStore.create({
@@ -34,17 +39,34 @@ app.use(session({
     resave: true
 }));
 
+passport.use('login', new LocalStrategy(async (email, password, done) => {
+    const userData = await authService.login(email, password);
+    console.log(userData)
+    console.log(email, password)
+    if(!userData){
+        return done(null, false);
+    }
+    done(null, userData);
+}))
+
+passport.use('register', new LocalStrategy({ passReqToCallback: true }, async (data, done) => {
+    const userData = await authService.register(data);
+    if(!userData){
+        return done(null, false);
+    }
+    done(null, userData);
+}))
+
+passport.serializeUser((user, done) => {
+    done(null, user.email)
+})
+passport.deserializeUser(async (email, done) => {
+    const userData = await userService.findById(email);
+    done(null, userData);
+})
+
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-app.use(router)
-
-app.get("/api/health", (_req, res) => {
-    res.status(200).send();
-});
-
-
 
 io.on('connection', async (socket) => {
     console.info('Nuevo cliente conectado')
@@ -61,5 +83,7 @@ io.on('connection', async (socket) => {
     });
 });
 
+
+app.use(indexRouter)
 app.use(errorHandler);
 export default server;

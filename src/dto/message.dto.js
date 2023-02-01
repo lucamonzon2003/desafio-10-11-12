@@ -14,8 +14,7 @@ export class MessageCreateDTO {
 
 export class MessageResponseDTO {
     constructor(message){
-        this.alias = message.alias
-        this.avatar = message.avatar
+        this.author = message.author
         this.mensaje = message.mensaje
     }
     build(){

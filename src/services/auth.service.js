@@ -8,13 +8,14 @@ class AuthService {
     async login(email, password) {
         try {
             const data = await userService.getById(email);
+            console.log(data)
             if (!data) return false;
             const user = data[0]
+            console.log(user)
             await bcrypt.compare(password, user.password).then(function(result) {
                 if(!result) return false;
             });
             return new UserResponseDTO(user).build()
-            // delete user.password; //TODO no borra
         } catch (err) {
             throw new Error(err)
         }
